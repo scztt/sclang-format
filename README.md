@@ -8,9 +8,11 @@ Its philosophy (for now):
 
 It does not currently get all cases correct, but it does significantly better that the sc-ide auto-intent.
 
-USAGE: sclang_format [options] [<file> ...]
-
+``` 
 Process sclang code passed to stdin until an end-of-file, then print the formatted result.
+
+USAGE: 
+  sclang_format [options] [<file> ...]
 
 OPTIONS:
   -t                             - If set, indent using tabs
