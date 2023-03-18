@@ -2,7 +2,7 @@
 `sclang_format` is a code auto-formatter for `sclang`, the SuperCollider programming language.
 
 Its philosophy (for now):
-1. Indent only: line breaks and inter-line formatting are up to the programmer.
+1. Indent only: line breaks and intra-line formatting are up to the programmer.
 2. Stick to common conventions in `SCClassLibrary`.
 3. Fix issues with the existing sc-ide formatting.
 
