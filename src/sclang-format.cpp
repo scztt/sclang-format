@@ -427,7 +427,8 @@ int main(int argc, const char* argv[]) {
             wait = true;
         }
     }
-
+    
+    uint spinCount = 0;
     while (!std::cin.bad()) {
         std::string text;
         std::getline(std::cin, text, (char)0);
@@ -436,6 +437,11 @@ int main(int argc, const char* argv[]) {
             auto result = sprklr::Format(text, indentSpaces, indentWithTabs);
             std::cout << result << (char)0;
             std::cout.flush();
+        } else {
+            spinCount++;
+            if (spinCount > 100) {
+                break;
+            }
         }
 
         if (!wait) break;
