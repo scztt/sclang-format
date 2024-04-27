@@ -1,15 +1,94 @@
-BasedOnStyle: WebKit
-AlignAfterOpenBracket: Align
-BreakBeforeBinaryOperators: NonAssignment
-BreakBeforeBraces: Attach
-BreakConstructorInitializers: AfterColon
+# Clang-format settings
+
+---
+
+# C++ Settings
+Language: Cpp
+BasedOnStyle: LLVM
+Standard: Auto
+Cpp11BracedListStyle: true
+ForEachMacros: [ foreach, BOOST_FOREACH ]
+
+# Objective-C Settings
+ObjCSpaceAfterProperty: false
+ObjCSpaceBeforeProtocolList: true
+
+# Comments
+CommentPragmas: '^!'
+FixNamespaceComments: true
+ReflowComments: false
+
+# Indentation
+AccessModifierOffset: -4
+ContinuationIndentWidth: 4
+ConstructorInitializerIndentWidth: 4
+IndentWidth: 4
+NamespaceIndentation: None
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+
+# Lines
+AlwaysBreakTemplateDeclarations: true
+AlwaysBreakBeforeMultilineStrings: false
+BreakBeforeBinaryOperators: false
+BreakBeforeTernaryOperators: false
 ColumnLimit: 120
 CompactNamespaces: true
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
-IndentPPDirectives: AfterHash
+IndentCaseLabels: true
+IndentFunctionDeclarationAfterType: false
+IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false
 MaxEmptyLinesToKeep: 2
-NamespaceIndentation: None
-SortIncludes: false
-SpaceBeforeCtorInitializerColon: false
+
+# Braces
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterClass: true
+  AfterControlStatement: true
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: false
+  AfterStruct: true
+  AfterUnion: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: false
+BreakBeforeBraces: Custom
+
+# Alignment
+AlignEscapedNewlinesLeft: true
+AlignTrailingComments: true
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+# Style
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortLambdasOnASingleLine: Empty
+BreakConstructorInitializersBeforeComma: true
+BinPackParameters: true
+SortIncludes: true
+
+# Penalties
+PenaltyBreakBeforeFirstCallParameter: 19
+PenaltyBreakComment: 120
+PenaltyBreakFirstLessLess: 96
+PenaltyBreakString: 1000
+PenaltyExcessCharacter: 96
+PenaltyReturnTypeOnItsOwnLine: 600
+
+# Spaces
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 1
+SpacesInAngles:  false
+SpacesInContainerLiterals: true
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
 TabWidth: 4
+UseTab: Never
+
+...
