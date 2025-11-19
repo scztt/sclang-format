@@ -31,31 +31,59 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Setup CMake
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: '3.24.4'
+
     - name: Set up build environment (Ubuntu)
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake build-essential antlr4
-
-    - name: Set up build environment (macOS)
-      if: matrix.os == 'macos-latest'
-      run: |
-        brew install cmake antlr
+        sudo apt-get install -y build-essential
 
     - name: Set up build environment (Windows)
       if: matrix.os == 'windows-latest'
-      uses: ilammy/msvc-dev-cmd@v1
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        update: true
+        install: >-
+          git
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-cmake
+          mingw-w64-x86_64-ninja
 
-    - name: Install ANTLR (Windows)
+    - name: Download ANTLR4
+      run: |
+        mkdir -p antlr
+        curl -o antlr/antlr-4.11.1-complete.jar https://www.antlr.org/download/antlr-4.11.1-complete.jar
+
+    - name: Set ANTLR path
+      shell: bash
+      run: |
+        echo "ANTLR_EXECUTABLE=$(pwd)/antlr/antlr-4.11.1-complete.jar" >> $GITHUB_ENV
+        java -version
+
+    - name: Configure CMake (Linux/macOS)
+      if: matrix.os != 'windows-latest'
+      run: |
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DANTLR_EXECUTABLE="$(pwd)/antlr/antlr-4.11.1-complete.jar"
+
+    - name: Configure CMake (Windows)
       if: matrix.os == 'windows-latest'
+      shell: msys2 {0}
       run: |
-        choco install antlr4 -y
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DANTLR_EXECUTABLE="$(pwd)/antlr/antlr-4.11.1-complete.jar" -G "MinGW Makefiles"
 
-    - name: Configure CMake
+    - name: Build (Linux/macOS)
+      if: matrix.os != 'windows-latest'
       run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        cmake --build build --config Release
 
-    - name: Build
+    - name: Build (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: msys2 {0}
       run: |
         cmake --build build --config Release
 
