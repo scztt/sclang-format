@@ -1,19 +1,19 @@
 #include "SCLexer.h"
 #include "SCParser.h"
 #include "antlr4-runtime.h"
-#include "sclang-ast-visitor.h"
 
 #include <array>
 #include <cstddef>
 #include <cstring>
 #include <fcntl.h>
+#include <iostream>
 #include <memory>
 #include <ranges>
 #include <regex>
 #include <signal.h>
 #include <string>
 #include <support/Declarations.h>
-#include <unistd.h>#include <iostream>
+#include <unistd.h>
 
 namespace {
 // trim from start (in place)
@@ -543,42 +543,6 @@ std::string Format(std::string code, int indentSpaces, bool indentWithTabs)
 }
 } // namespace sprklr
 
-void ast_printer()
-{
-    bool shouldWait = false;
-
-    while (shouldWait)
-    {
-    }
-
-    uint spinCount = 0;
-    while (!std::cin.bad())
-    {
-        std::string text;
-        std::getline(std::cin, text, (char)0);
-
-        if (text.size() > 0)
-        {
-            sclang_ast_visitor::print_ast(text, std::cout);
-
-            std::cout << (char)0;
-            std::cout.flush();
-        }
-        else
-        {
-            spinCount++;
-            if (spinCount > 100)
-            {
-                break;
-            }
-        }
-
-        // if (!wait) {
-        //     break;
-        // }
-    }
-}
-
 int main(int argc, const char* argv[])
 {
     using namespace sprklr;
@@ -613,19 +577,6 @@ int main(int argc, const char* argv[])
             astPrinter = true;
         }
     }
-
-    // while (wait)
-    // {
-    // }
-
-    if (astPrinter)
-    {
-        ast_printer();
-        return 0;
-    };
-
-    // int flags = fcntl(STDOUT_FILENO, F_GETFL, 0);
-    // fcntl(STDOUT_FILENO, F_SETFL, flags | O_NONBLOCK);
 
     uint spinCount = 0;
     while (!std::cin.bad() && !std::cin.eof())

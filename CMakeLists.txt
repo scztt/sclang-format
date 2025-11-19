@@ -1,6 +1,11 @@
 cmake_policy(SET CMP0048 NEW)
 cmake_minimum_required(VERSION 3.9)
 
+# Set policies to avoid warnings and compatibility issues
+if(POLICY CMP0135)
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 set(PROJECT_NAME "sclang-format")
@@ -28,6 +33,21 @@ else()
 endif()
 
 message(STATUS "${PROJECT_NAME} v${PROJECT_VERSION}, ${GIT_BRANCH}@${GIT_COMMIT_HASH}")
+
+# Use system ANTLR4 instead of building from source (Windows only)
+if(WIN32)
+    find_package(PkgConfig QUIET)
+    if(PkgConfig_FOUND)
+        pkg_check_modules(ANTLR4 antlr4-runtime)
+        if(ANTLR4_FOUND)
+            set(USE_SYSTEM_ANTLR4 ON CACHE BOOL "Use system ANTLR4" FORCE)
+        endif()
+    endif()
+endif()
+
+# Disable ANTLR4 C++ tests to avoid googletest dependency
+set(ANTLR_BUILD_CPP_TESTS OFF CACHE BOOL "Build C++ tests" FORCE)
+set(ENV{ANTLR_BUILD_CPP_TESTS} "OFF")
 
 add_subdirectory(external/sparkler)
 add_subdirectory(src)

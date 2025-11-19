@@ -31,10 +31,26 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Apply ANTLR4 patch to disable tests
+      shell: bash
+      run: |
+        cd external/sparkler/cmake
+        patch -p4 < ../../../disable-antlr-tests.patch || true
+
+    - name: Cache ANTLR4 Runtime
+      uses: actions/cache@v4
+      with:
+        path: |
+          build/external/sparkler/antlr4_runtime
+          build/_deps
+        key: antlr4-${{ runner.os }}-cmake-3.10.3-${{ hashFiles('external/sparkler/CMakeLists.txt') }}
+        restore-keys: |
+          antlr4-${{ runner.os }}-
+
     - name: Setup CMake
       uses: jwlawson/actions-setup-cmake@v2
       with:
-        cmake-version: '3.24.4'
+        cmake-version: '3.10.3'
 
     - name: Set up build environment (Ubuntu)
       if: matrix.os == 'ubuntu-latest'
@@ -52,12 +68,23 @@ jobs:
           git
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-cmake
+          mingw-w64-x86_64-make
           mingw-w64-x86_64-ninja
+          mingw-w64-x86_64-antlr4-runtime-cpp
+
+    - name: Cache ANTLR4 JAR
+      uses: actions/cache@v4
+      with:
+        path: antlr/antlr-4.11.1-complete.jar
+        key: antlr4-jar-4.11.1
 
     - name: Download ANTLR4
+      shell: bash
       run: |
         mkdir -p antlr
-        curl -o antlr/antlr-4.11.1-complete.jar https://www.antlr.org/download/antlr-4.11.1-complete.jar
+        if [ ! -f antlr/antlr-4.11.1-complete.jar ]; then
+          curl -o antlr/antlr-4.11.1-complete.jar https://www.antlr.org/download/antlr-4.11.1-complete.jar
+        fi
 
     - name: Set ANTLR path
       shell: bash
@@ -68,13 +95,19 @@ jobs:
     - name: Configure CMake (Linux/macOS)
       if: matrix.os != 'windows-latest'
       run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=Release -DANTLR_EXECUTABLE="$(pwd)/antlr/antlr-4.11.1-complete.jar"
+        cmake -B build . -DCMAKE_BUILD_TYPE=Release -DANTLR_EXECUTABLE="$(pwd)/antlr/antlr-4.11.1-complete.jar"
 
     - name: Configure CMake (Windows)
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
       run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=Release -DANTLR_EXECUTABLE="$(pwd)/antlr/antlr-4.11.1-complete.jar" -G "MinGW Makefiles"
+        cmake -B build . \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DANTLR_EXECUTABLE="$(pwd)/antlr/antlr-4.11.1-complete.jar" \
+          -DCMAKE_C_COMPILER=gcc \
+          -DCMAKE_CXX_COMPILER=g++ \
+          -DCMAKE_MAKE_PROGRAM=mingw32-make \
+          -G "MinGW Makefiles"
 
     - name: Build (Linux/macOS)
       if: matrix.os != 'windows-latest'

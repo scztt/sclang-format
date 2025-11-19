@@ -1,0 +1,26 @@
+--- a/external/sparkler/cmake/ExternalAntlr4Cpp.cmake
++++ b/external/sparkler/cmake/ExternalAntlr4Cpp.cmake
+@@ -107,6 +107,10 @@
+       CMAKE_CACHE_ARGS
+           -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+           -DWITH_STATIC_CRT:BOOL=${ANTLR4_WITH_STATIC_CRT}
+           -DDISABLE_WARNINGS:BOOL=ON
++          -DANTLR_BUILD_CPP_TESTS:BOOL=OFF
++          -DBUILD_TESTS:BOOL=OFF
++          -DWITH_DEMO:BOOL=OFF
++          -DCMAKE_POLICY_VERSION_MINIMUM:STRING=3.5
+           # -DCMAKE_CXX_STANDARD:STRING=17 # if desired, compile the runtime with a different C++ standard
+           # -DCMAKE_CXX_STANDARD:STRING=${CMAKE_CXX_STANDARD} # alternatively, compile the runtime with the same C++ standard as the outer project
+       INSTALL_COMMAND ""
+@@ -152,6 +156,10 @@
+       CMAKE_CACHE_ARGS
+           -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+           -DWITH_STATIC_CRT:BOOL=${ANTLR4_WITH_STATIC_CRT}
+           -DDISABLE_WARNINGS:BOOL=ON
++          -DANTLR_BUILD_CPP_TESTS:BOOL=OFF
++          -DBUILD_TESTS:BOOL=OFF
++          -DWITH_DEMO:BOOL=OFF
++          -DCMAKE_POLICY_VERSION_MINIMUM:STRING=3.5
+           # -DCMAKE_CXX_STANDARD:STRING=17 # if desired, compile the runtime with a different C++ standard
+           # -DCMAKE_CXX_STANDARD:STRING=${CMAKE_CXX_STANDARD} # alternatively, compile the runtime with the same C++ standard as the outer project
+       INSTALL_COMMAND ""
