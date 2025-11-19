@@ -1,4 +1,4 @@
-add_executable(sclang-format sclang-format.cpp sclang-ast-visitor.cpp)
+add_executable(sclang-format sclang-format.cpp)
 
 if(WIN32)
   set_property(TARGET sclang-format PROPERTY MSVC_RUNTIME_LIBRARY
