@@ -1,3 +1,3 @@
 [submodule "external/sparkler"]
 	path = external/sparkler
-	url = https://github.com/hadron-sclang/sparkler.git
+	url = https://codeberg.org/hadron/sprklr.git
