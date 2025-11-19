@@ -35,16 +35,21 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake build-essential
+        sudo apt-get install -y cmake build-essential antlr4
 
     - name: Set up build environment (macOS)
       if: matrix.os == 'macos-latest'
       run: |
-        brew install cmake
+        brew install cmake antlr
 
     - name: Set up build environment (Windows)
       if: matrix.os == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Install ANTLR (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        choco install antlr4 -y
 
     - name: Configure CMake
       run: |
